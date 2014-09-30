@@ -1,7 +1,5 @@
 package Classes;
 
-
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,21 +7,30 @@ import java.util.List;
  * Created by imerir on 29/09/2014.
  */
 
-@Entity
-@Table(name = "UTILISATEURS")
 public class Users implements Serializable{
 
     private String firstName;
     private String lastName;
     private List<RoundPlayed> listRoundPlayed;
     private String email;
-
-    @Id
-    @GeneratedValue
     private Long id;
-
-    @Column(name = "LOGIN")
     private String login;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
 
     public Long getId() {
         return id;
@@ -33,11 +40,27 @@ public class Users implements Serializable{
         this.id = id;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public List<RoundPlayed> getListRoundPlayed() {
+        return listRoundPlayed;
+    }
+
+    public void setListRoundPlayed(List<RoundPlayed> listRoundPlayed) {
+        this.listRoundPlayed = listRoundPlayed;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
