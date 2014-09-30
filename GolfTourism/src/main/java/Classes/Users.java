@@ -5,8 +5,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
-* Created by imerir on 29/09/2014.
-        */
+ * Created by imerir on 29/09/2014.
+ */
 
 @Entity
 @Table(name = "UTILISATEURS")
