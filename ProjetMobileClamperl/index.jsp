@@ -47,25 +47,6 @@
             </div>
             <div id="pied">2014 - Promotion Maisonnier - <a href="http://www.imerir.com" target="_blank">IMERIR<img src="img/icone_imerir.png"></a> - <a href="http://www.perpignan.cci.fr" target="_blank">CCI Pyr&eacute;n&eacute;es-Orientales<img src="img/logo_cci.png"></a></div>
         </div>
-  <!--       <script type="text/javascript">
-            var xhr_object = null; 
-                
-               if(window.XMLHttpRequest) // Firefox 
-                  xhr_object = new XMLHttpRequest(); 
-               else if(window.ActiveXObject) // Internet Explorer 
-                  xhr_object = new ActiveXObject("Microsoft.XMLHTTP"); 
-               else { // XMLHttpRequest non supporté par le navigateur 
-                  alert("Votre navigateur ne supporte pas les objets XMLHTTPRequest..."); 
-                 return; 
-              } 
-               
-              xhr_object.open("GET", "172.31.1.20:1234", true); 
-               
-              xhr_object.onreadystatechange = function() { 
-                 if(this.readyState == 4) alert(this.responseText); 
-              } 
-               
-             xhr_object.send(null); 
-        </script> -->
+
     </body>
 </html>
