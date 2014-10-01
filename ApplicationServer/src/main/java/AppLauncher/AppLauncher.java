@@ -1,6 +1,5 @@
 package AppLauncher;
 
-import Classes.Connection;
 import Classes.Users;
 import Services.ServicesImpl.BDDCommunicationUtilisateurImpl;
 
@@ -13,7 +12,7 @@ import java.util.List;
 public class AppLauncher {
 
     public static void main(String args[]){
-/*
+
         BDDCommunicationUtilisateurImpl bddCommunicationUtilisateur = new BDDCommunicationUtilisateurImpl();
         List<Users> listUtilisateur = new ArrayList<Users>();
         listUtilisateur = bddCommunicationUtilisateur.list();
@@ -21,8 +20,8 @@ public class AppLauncher {
         for(Users users : listUtilisateur){
             System.out.println(users.getLogin());
         }
-*/
-        Connection connection = new Connection();
-        connection.run();
+
     }
+
+
 }
