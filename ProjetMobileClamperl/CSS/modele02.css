@@ -16,126 +16,12 @@
 
 /* Général */
 
-.nav {
-  padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
-}
-.nav > li {
-  position: relative;
-  display: block;
-}
-.nav > li > a {
-  position: relative;
-  display: block;
-  padding: 10px 15px;
-}
-.nav > li > a:hover,
-.nav > li > a:focus {
-  text-decoration: none;
-  background-color: #eee;
-}
-.nav > li.disabled > a {
-  color: #777;
-}
-.nav > li.disabled > a:hover,
-.nav > li.disabled > a:focus {
-  color: #777;
-  text-decoration: none;
-  cursor: not-allowed;
-  background-color: transparent;
-}
-.nav .open > a,
-.nav .open > a:hover,
-.nav .open > a:focus {
-  background-color: #eee;
-  border-color: #428bca;
-}
-.nav .nav-divider {
-  height: 1px;
-  margin: 9px 0;
-  overflow: hidden;
-  background-color: #e5e5e5;
-}
-.nav > li > a > img {
-  max-width: none;
-}
-.nav-tabs {
-  border-bottom: 1px solid #ddd;
-}
-.nav-tabs > li {
-  float: left;
-  margin-bottom: -1px;
-}
-.nav-tabs > li > a {
-  margin-right: 2px;
-  line-height: 1.42857143;
-  border: 1px solid transparent;
-  border-radius: 4px 4px 0 0;
-}
-.nav-tabs > li > a:hover {
-  border-color: #eee #eee #ddd;
-}
-.nav-tabs > li.active > a,
-.nav-tabs > li.active > a:hover,
-.nav-tabs > li.active > a:focus {
-  color: #555;
-  cursor: default;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-bottom-color: transparent;
-}
-.nav-tabs.nav-justified {
-  width: 100%;
-  border-bottom: 0;
-}
-.nav-tabs.nav-justified > li {
-  float: none;
-}
-.nav-tabs.nav-justified > li > a {
-  margin-bottom: 5px;
-  text-align: center;
-}
-.nav-tabs.nav-justified > .dropdown .dropdown-menu {
-  top: auto;
-  left: auto;
-}
-@media (min-width: 768px) {
-  .nav-tabs.nav-justified > li {
-    display: table-cell;
-    width: 1%;
-  }
-  .nav-tabs.nav-justified > li > a {
-    margin-bottom: 0;
-  }
-}
-.nav-tabs.nav-justified > li > a {
-  margin-right: 0;
-  border-radius: 4px;
-}
-.nav-tabs.nav-justified > .active > a,
-.nav-tabs.nav-justified > .active > a:hover,
-.nav-tabs.nav-justified > .active > a:focus {
-  border: 1px solid #ddd;
-}
-@media (min-width: 768px) {
-  .nav-tabs.nav-justified > li > a {
-    border-bottom: 1px solid #ddd;
-    border-radius: 4px 4px 0 0;
-  }
-  .nav-tabs.nav-justified > .active > a,
-  .nav-tabs.nav-justified > .active > a:hover,
-  .nav-tabs.nav-justified > .active > a:focus {
-    border-bottom-color: #fff;
-  }
-}
 *::-moz-selection {
 	background:rgba(151, 182, 55, 0.4) none repeat scroll 0 0;
 	color:white;
 }
 
 body {
-	color: #FFFFFF;
 	margin:0;
 	padding:0;
 	background: url(../img/earth_golf.jpg) no-repeat center fixed; 
@@ -156,19 +42,18 @@ strong {
 h1,h2 {
 	text-shadow: 0px 0px 9px #000000;
 }
-
+#entete {
+	color : #FFF;
+}
 /* Navigation */
 #navigation {
-	/*background: #1F61AB;*/
 	background: rgba(31, 97, 171, 0.8);
 }
 
 #navigation a {
-	color: #FFFFFF;
+	color: rgba(31, 97, 171, 1);
 }
 #navigation a:hover, #navigation a:focus {
-	/*background: #000000;
-	color : #68811C;*/
 	text-shadow: 0px 0px 5px #FFFFFF;
 }
 
@@ -177,7 +62,6 @@ h1,h2 {
 	color: #363B29;
 	background: rgba(108, 171, 212, 0.8);
 	border: 3px solid white;
-	/**/
 }
 #contenu a {
 	color: #FFFFFF;
@@ -213,7 +97,7 @@ body {
 	padding: 15px 0 25px 0;
 }
 #global {
-	width: 750px;
+	width: 50%;
 	margin-left: auto;/* 20px */
 	margin-right: auto; /* Voir -> Note 1 ci-dessous */
 
@@ -292,6 +176,74 @@ body {
 	font-size: 1em;
 }
 
+
+/*---------------------------CSS FOR GOOGLE CHARTS---------------------------*/
+* {
+  @include box-sizing(border-box);
+}
+
+$pad: 20px;
+ 
+.grid {
+  background: white;
+  margin: 0 0 $pad 0;
+  
+  &:after {
+    /* Or @extend clearfix */
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+[class*='col-'] {
+  /*float: left;*/
+  padding-right: $pad;
+  .grid &:last-of-type {
+    padding-right: 0;
+  }
+}
+.col-2-3 {
+  width: 66.66%;
+}
+.col-1-1 {
+  width: 100%;
+}
+.col-1-3 {
+  width: 33.33%;
+}
+.col-1-2 {
+  width: 50%;
+}
+.col-1-4 {
+  width: 25%;
+}
+.col-1-8 {
+  width: 12.5%;
+}
+
+/* Opt-in outside padding */
+.grid-pad {
+  padding: $pad 0 $pad $pad;
+  [class*='col-']:last-of-type {
+    padding-right: $pad;
+  }
+}
+.chart {
+  width: 100%; 
+  height: auto;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
+
+pre {
+ width:100%;
+ white-space: pre-wrap;       /* css-3 */
+ white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+ white-space: -pre-wrap;      /* Opera 4-6 */
+ white-space: -o-pre-wrap;    /* Opera 7 */
+ word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
 
 /* --- NOTES ---
 

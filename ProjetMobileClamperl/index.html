@@ -1,0 +1,352 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr">
+    <head>
+        <title>Web Site Clamperl</title>
+
+        <link rel="stylesheet" type="text/css" href="CSS/base.css" media="all" />
+        <link rel="stylesheet" type="text/css" href="CSS/modele02.css" media="screen" />
+
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <!-- Elément Google Maps indiquant que la carte doit être affiché en plein écran et
+        qu'elle ne peut pas être redimensionnée par l'utilisateur -->
+        <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+        <!-- Inclusion de l'API Google MAPS -->
+        <!-- Le paramètre "sensor" indique si cette application utilise détecteur pour déterminer la position de l'utilisateur -->
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+        <script type="text/javascript" src="JS/clamperl.js"></script>
+        <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+        <script src="JS/jquery-2.1.1.min.js"></script>
+
+        <script type='text/javascript' src='bootstrap/js/bootstrap.js'></script>     
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" media="screen" />
+
+    <script type='text/javascript'>
+      google.load("visualization", "1", {packages:["corechart"]});
+     
+      function drawChart() {
+
+        var data = fillBarChart();
+
+        var options = {
+          backgroundColor: {fill:'transparent'},
+          legend: {position: "top"},
+          annotations: {highContrast: true},
+          opacity: 0.2,
+          colors : ["#1F61AB"]
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('stats_dist'));
+
+        chart.draw(data, options);
+      }
+
+      function drawUser() {
+        // Some raw data (not necessarily accurate)
+        var data = fillColumnChart("user");
+        
+
+        var options = {
+          backgroundColor: {fill:'transparent'},
+          legend: {position: "top"},
+          annotations: {highContrast: true},
+          hAxis: {title: "Game"},
+          vAxis: {title: "User"},
+          colors : ["#F0F0F0","#1F61AB"]
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('stats_game_user'));
+        chart.draw(data, options);
+      }
+
+      function drawHit() {
+        // Some raw data (not necessarily accurate)
+        var data = fillColumnChart("hit");
+        
+
+        var options = {
+          backgroundColor: {fill:'transparent'},
+          legend: {position: "top"},
+          annotations: {highContrast: true},
+          hAxis: {title: "Game"},
+          vAxis: {title: "Hit"},
+          colors : ["#1F61AB"]
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('stats_game_hit'));
+        chart.draw(data, options);
+      }
+      function drawAvg() {
+        // Some raw data (not necessarily accurate)
+        var data = fillColumnChart("avg");
+        
+
+        var options = {
+          backgroundColor: {fill:'transparent'},
+          legend: {position: "top"},
+          annotations: {highContrast: true},
+          hAxis: {title: "Game"},
+          vAxis: {title: "Average Distance per hit"},
+          colors : ["#F0F0F0"]
+        };
+
+        var chart = new google.visualization.ColumnChart(document.getElementById('stats_game_avg'));
+        chart.draw(data, options);
+      }
+    </script>
+    </head>
+    <body onload="initialize()" onresize="reshape()">
+        <div id="global" >
+            <div id="entete"><h1>Clamperl</h1><h2>Architectures and Platforms Integration Project</h2></div>
+            <div id="navigation">
+                <div class="btn-toolbar" role="toolbar">
+                  <div class="btn-group">
+                        <button class="btn" onclick="setActive('tab1')"style="height:35px;">Players</button>
+                        <button class="btn" onclick="setActive('tab2')"style="height:35px;">Statistics</button>
+                        <button class="btn" onclick="setActive('tab3')"style="height:35px;">About</button>
+                  </div>
+                  <div class="btn-group">
+                    <button class="btn btn-success" onclick="refresh()" title="Refresh all data" style="height:35px;"><i class="glyphicon glyphicon-refresh"></i></button>
+                  </div>
+                </div>
+            </div>
+            <div id="contenu"> 
+                <div id="joueurs">
+                    <h2 onclick="masquer('sec1')"><a><i id="sec10" class="glyphicon glyphicon-chevron-down"></i>&nbsp;<span id="listOfUsers">List of players in current game</span></a></h2>
+                    <div id="sec1" class="panel panel-default" >  
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Distance</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tabUser">
+                      </tbody>
+                    </table>
+                    </div>
+                    <h2 onclick="masquer('sec2')"><a><i id="sec20" class="glyphicon glyphicon-chevron-down"></i>&nbsp;Map of connected players</a></h2>
+                    <div id="sec2" >
+                        <div class="btn-toolbar" role="toolbar">
+                          <div class="btn-group">
+                               <button id="reset_map" class="btn btn-primary" title="Reset the position of the map" style="height:35px;"><i class="glyphicon glyphicon-home"></i></button>
+                                <button id="toggle_map" class="btn btn-success" title="Switch the view on the map between satellite and plan" style="height:35px;"><i id="toggle_map0" class="glyphicon glyphicon-globe"></i></button>
+                          </div>
+                          <div class="btn-group">
+                              <button id="zoomout_map" class="btn" title="Zoom out the map" style="height:35px;"><i class="glyphicon glyphicon-zoom-out"></i></button>
+                              <button id="zoomin_map" class="btn" title="Zoom in the map" style="height:35px;"><i class="glyphicon glyphicon-zoom-in"></i></button>
+                          </div>
+                        </div>
+                        <div id="carte" style="width:100%; height:50%"></div>
+                    </div>
+                </div>
+                <div id="stats" class="grid" style="display:none">
+                  <div class="col-1-1" style="width:100%">
+                    <h2 id="udicg" onclick="masquer('stats_dist')"><a><i id="stats_dist0" class="glyphicon glyphicon-chevron-down"></i>&nbsp;User distance in current game</a></h2>
+                    <div id="stats_dist" class="chart" style="width:100%"></div>
+                  </div>
+                  <div class="col-1-1" style="width:100%">
+                    <h2 onclick="masquer('stats_game_user');masquer('stats_game_hit');masquer('stats_game_avg');"><a><i id="stats_game0" class="glyphicon glyphicon-chevron-down"></i>&nbsp;Games History</a></h2>
+                    <div id="stats_game_user" class="chart" style="width:100%"></div>
+                    <div id="stats_game_hit" class="chart" style="width:100%"></div>
+                    <div id="stats_game_avg" class="chart" style="width:100%"></div>
+                  </div>
+                </div>
+                <div id="about" style="display:none">
+                  <h2 onclick="masquer('teamMembers')"><a><i id="teamMembers0" class="glyphicon glyphicon-chevron-down"></i>&nbsp;Clamperl Team</a></h2>
+                  <div id="teamMembers" class="panel panel-default"> 
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>First Name</th>
+                          <th>Last Name</th>
+                          <th>Role</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td><font style="color:rgba(31, 97, 171, 0.8)">Clément</font></td>
+                          <td><font style="color:rgba(31, 97, 171, 0.8)">Poizat</font></td>
+                          <td><font style="color:rgba(31, 97, 171, 0.8)">Project Manager</font></td>
+                        </tr>
+                        <tr>
+                          <td>Anthony</td>
+                          <td>Peyrard</td>
+                          <td>Data Base</td>
+                        </tr>
+                        <tr>
+                          <td>Arnaud</td>
+                          <td>Marty</td>
+                          <td>Server JAVA</td>
+                        </tr>
+                        <tr>
+                          <td>Thomas</td>
+                          <td>Vallier-Remy</td>
+                          <td>iOS</td>
+                        </tr>
+                        <tr>
+                          <td>Cyril</td>
+                          <td>Py</td>
+                          <td>Web Supervisor</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+              
+                  <h2 onclick="masquer('doc')"><a><i id="doc0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;JavaScript Documentation</a></h2>
+                  <div id="doc" style="display:none" style="width:100%;">
+                    <h4>Click <a href="http://perso.imerir.com/cpy/ProjetInt/Clamperl/Doxygen/html/clamperl_8js.html" target="_blank">here</a> to see the Doxygen documentation.</h4>
+                    <h3 onclick="masquer('JavaScript_File')"><a><i id="JavaScript_File0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;JavaScript File</a></h3>
+                      <div id="JavaScript_File" style="display:none" >
+                        <pre>
+ JavaScript File
+*\author Cyril Py
+*\param carte This is the map of the site.
+*\param markers This is the array that contains all the markers.
+*\param userData This is the JSON string parsed.
+                        </pre>
+                      </div>
+                      <h3 onclick="masquer('initialize')"><a><i id="initialize0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;initialize()</a></h3>
+                      <div id="initialize" style="display:none" width="100%">
+                        <pre>
+*Function initialize()
+*\brief Function that initializes the map with the imerir marker. 
+                       </pre>
+                      </div>
+                        <h3 onclick="masquer('setZoom')"><a><i id="setZoom0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;setZoom()</a></h3>
+                      <div id="setZoom" style="display:none" width="100%">
+                        <pre>
+*Function setZoom(value)
+*\brief Function that adjusts the zoom on the map depending on the parameter. When the parameter contains "+", the function zoom in the map, else it zoom out the map.
+*\param value The paremeter can be "+" or "-".
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('refresh')"><a><i id="refresh0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;refresh()</a></h3>
+                      <div id="refresh" style="display:none" width="100%">
+                        <pre>
+*Function refresh()
+*\brief Function that deletes all marker on the map, and calls the function communicate.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('toggle_map1')"><a><i id="toggle_map10" class="glyphicon glyphicon-chevron-right"></i>&nbsp;toggle_map()</a></h3>
+                      <div id="toggle_map1" style="display:none" width="100%">
+                        <pre>
+*Function toggle_map()
+*\brief Function that switches the type of the map between road and satellite.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('toggle_markers')"><a><i id="toggle_markers0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;toggle_markers()</a></h3>
+                      <div id="toggle_markers" style="display:none" width="100%">
+                        <pre>
+*Function toggle_markers(user)
+*\brief Function that hides or shows the marker corresponding to the user (passed as a parameter) on the map.
+*\param user Id of the user whose function must hide or show the marker.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('reshape')"><a><i id="reshape0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;reshape()</a></h3>
+                      <div id="reshape" style="display:none" width="100%">
+                        <pre>
+*Function reshape()
+*\brief Function that resets the width of the global div depending on the width and height of the window.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('fillBarChart')"><a><i id="fillBarChart0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;fillBarChart()</a></h3>
+                      <div id="fillBarChart" style="display:none" width="100%">
+                        <pre>
+*Function fillBarChart()
+*\brief Function that fills the array with the name and the distance of all the users, and return the array at the function that draws the chart.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('fillColumnChart')"><a><i id="fillColumnChart0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;fillColumnChart()</a></h3>
+                      <div id="fillColumnChart" style="display:none" width="100%">
+                        <pre>
+*Function fillColumnChart()
+*\brief Function that fills the array passed as parameter, and return the array at the function that draws the chart.
+*\param chart This is the name of the chart that the function must fill.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('stats1')"><a><i id="stats10" class="glyphicon glyphicon-chevron-right"></i>&nbsp;stats()</a></h3>
+                      <div id="stats1" style="display:none" width="100%">
+                        <pre>
+*Function stats(data)
+*\brief Function that receives a JSON string, calls the function that parses it, and calls the function that draws the chart.
+*\param data JSON String.
+                        </pre>
+                      </div>
+                      <h3 onclick="masquer('users')"><a><i id="users0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;users()</a></h3>
+                      <div id="users" style="display:none" width="100%">
+                        <pre>
+*Function users(data)
+*\brief Function that fills the array of the users with their name, their distance and the two buttons for hide/show the marker of the user and locate him on the map.
+*\brief The function calls JSONParse() and receives an object that it will be used to fill the array of users.
+*\param data JSON String.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('communicate')"><a><i id="communicate0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;communicate()</a></h3>
+                      <div id="communicate" style="display:none" width="100%">
+                        <pre>
+*Function communicate(keyword, method, value)
+*\brief Function that sends a request to the server in AJAX. The request is an HTTPRequest in GET. The string answered by the server is send to the method passed as a parameter.
+*\brief The URL is build like: "http://ip:port/golfTourism/" + the keyword passed as a parameter and the variable is id and its value is null.
+*\param keyword This is the keyword that is used to request the server about users or others.
+*\param method This is the function that will be called 
+*\param value This is the value of the id.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('addMarker')"><a><i id="addMarker0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;addMarker()</a></h3>
+                      <div id="addMarker" style="display:none" width="100%">
+                        <pre>
+*Function addMarker (latitude, longitude, info, iduser)
+*\brief Function that add a marker on the map and creates the listeners on the marker.
+*\param latitude This is the latitude of the marker that the function must add.
+*\param longitude This is the longitude of the marker that the function must add.
+*\param info This is the name of the user that will be displayed on the marker when the marker will be hovered.
+*\param iduser This is the id of the marker, that is the same as the user.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('masquer')"><a><i id="masquer0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;masquer()</a></h3>
+                      <div id="masquer" style="display:none" width="100%">
+                        <pre>
+*Function masquer(section)
+*\brief Function that hide or display the section passed as parameter.
+*\param section This is the section that will be hidden or shown.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('setActive')"><a><i id="setActive0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;setActive()</a></h3>
+                      <div id="setActive" style="display:none" width="100%">
+                        <pre>
+*Function setActive(onglet)
+*\brief Function that allow to navigate in the site by showing the page passed as parameter and hiding all the other pages.
+*\param onglet This is the page that will be shown.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('JSONParse')"><a><i id="JSONParse0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;JSONParse()</a></h3>
+                      <div id="JSONParse" style="display:none" width="100%">
+                        <pre>
+*Function JSONParse(json)
+*\brief Function that parse the JSON string and return the result.
+*\param json This is the JSON string that will be parsed.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('showMarkers')"><a><i id="showMarkers0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;showMarkers()</a></h3>
+                      <div id="showMarkers" style="display:none" width="100%">
+                        <pre>
+*Function showMarkers(user)
+*\brief Function that shows the marker on the map.
+*\param user This is the id of the marker that will be shown on the map.
+                       </pre>
+                      </div>
+                      <h3 onclick="masquer('deleteMarkers')"><a><i id="deleteMarkers0" class="glyphicon glyphicon-chevron-right"></i>&nbsp;deleteMarkers()</a></h3>
+                      <div id="deleteMarkers" style="display:none" width="100%">
+                        <pre>
+*Function deleteMarkers()
+*\brief Function that removes all the markers from the map and empty the array of markers.
+                       </pre>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div id="pied">Architectures and Platforms Integration Project - 2014 - Clamperl - Promotion Maisonnier - <a href="http://www.imerir.com" target="_blank">IMERIR<img src="img/icone_imerir.png"></a>
+            </div>
+          </div>
+    </body>
+</html>
