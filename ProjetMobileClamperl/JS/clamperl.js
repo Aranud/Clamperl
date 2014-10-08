@@ -43,7 +43,7 @@ function initialiser() {
     //lier le tracé à la carte
     //ceci permet au tracé d'être affiché sur la carte
     traceParcoursBus.setMap(carte);
-        JSONParse(userList);---------------------------------------------------------------------------------------------------------------------------------------
+        //JSONParse(userList);---------------------------------------------------------------------------------------------------------------------------------------
       //  communicate();
 }
 /*
